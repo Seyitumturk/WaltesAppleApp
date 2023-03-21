@@ -1,22 +1,29 @@
-const calculateScore = (dice) => {
-  const counts = new Array(6).fill(0);
-  let score = 0;
+import React from 'react';
+import { Text, View, StyleSheet } from 'react-native';
 
-  dice.forEach((value) => {
-    counts[value - 1]++;
-  });
+const ScoreBoards = ({ score, player }) => {
+  const rotation = player === 1 ? '180deg' : '0deg';
 
-  for (let i = 0; i < counts.length; i++) {
-    if (counts[i] === 3) {
-      score += (i + 1) * 100;
-    } else if (counts[i] === 2) {
-      score += (i + 1) * 10;
-    } else if (counts[i] === 1) {
-      score += i + 1;
-    }
-  }
-
-  return score;
+  return (
+    <View style={styles.container}>
+      <Text style={[styles.scoreText, { transform: [{ rotate: rotation }] }]}>
+        Player {player + 1}: {score}
+      </Text>
+    </View>
+  );
 };
 
-export default { calculateScore };
+const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    top: 10,
+    alignSelf: 'center',
+  },
+  scoreText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+});
+
+export default ScoreBoards;

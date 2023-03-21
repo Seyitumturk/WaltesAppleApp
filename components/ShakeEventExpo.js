@@ -26,4 +26,4 @@ class ShakeEventExpo {
   }
 }
 
-export { ShakeEventExpo };
+export default ShakeEventExpo;
