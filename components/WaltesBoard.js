@@ -12,18 +12,38 @@ export default function WaltesBoard({ playerTurn, setDice }) {
     const newDice = dice.map(() => (Math.random() > 0.5 ? 1 : 0));
     setLocalDice(newDice);
   };
+  const existingPositions = [];
 
-  const randomPosition = (radius, size) => {
+  const randomPosition = (radius, size, minDistance = 50) => {
     const innerRadius = radius - size;
+    let x, y, valid;
 
-    const angle = Math.random() * Math.PI * 2;
-    const distance = Math.sqrt(Math.random()) * innerRadius;
+    do {
+      valid = true;
+      const angle = Math.random() * Math.PI * 2;
+      const distance = Math.sqrt(Math.random()) * innerRadius;
 
-    const x = Math.cos(angle) * distance;
-    const y = Math.sin(angle) * distance;
+      x = Math.cos(angle) * distance;
+      y = Math.sin(angle) * distance;
 
+      // Check if the position is far enough from the other dices
+      for (const existingPosition of existingPositions) {
+        const dx = x - existingPosition.x;
+        const dy = y - existingPosition.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < minDistance) {
+          valid = false;
+          break;
+        }
+      }
+    } while (!valid);
+
+    x -= 40; // Adjust this value to move the dices to the left
+    existingPositions.push({ x, y });
     return { x, y };
   };
+
 
 
   React.useEffect(() => {
